@@ -1,18 +1,61 @@
-- 👋 Hi, I’m @Aadrino
-- 👀 I’m interested in Clip
-- 🌱 I’m currently learning ...
-- 💞️ I’m looking to collaborate on ...
-- 📫 How to reach me ...
+# extract a subgraph of publication within a time range
+sub_graph = interactive.subgraph("g.V().has('year', gte(2014).and(lte(2020))).outE('cites')")
 
-<!---
-Aadrino/Aadrino is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-You can click the Preview link to take a look at your changes.
---->
-👀👀
-echo "# -" >> README.md
-git init
-git add README.md
-git commit -m "first commit"
-git branch -M main
-git remote add origin https://github.com/Aadrino/-.git
-git push -u origin main
+# project the projected graph to simple graph.
+simple_g = sub_graph.project(vertices={"paper": []}, edges={"cites": []})
+
+ret1 = graphscope.k_core(simple_g, k=5)
+ret2 = graphscope.triangles(simple_g)
+
+# add the results as new columns to the citation graph
+sub_graph = sub_graph.add_column(ret1, {"kcore": "r"})
+sub_graph = sub_graph.add_column(ret2, {"tc": "r"})<dependencies>
+  <dependency>
+    <groupId>com.example</groupId>
+    <artifactId>test</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </dependency>
+</dependencies><settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                      http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+  <activeProfiles>
+    <activeProfile>github</activeProfile>
+  </activeProfiles>
+
+  <profiles>
+    <profile>
+      <id>github</id>
+      <repositories>
+        <repository>
+          <id>central</id>
+          <url>https://repo1.maven.org/maven2</url>
+        </repository>
+        <repository>
+          <id>github</id>
+          <url>https://{% ifversion fpt or ghec %}maven.pkg.github.com{% else %}maven.HOSTNAME{% endif %}/OWNER/REPOSITORY</url>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </repository>
+      </repositories>
+    </profile>
+  </profiles>
+
+  <servers>
+    <server>
+      <id>github</id>
+      <username>USERNAME</username>
+      <password>TOKEN</password>
+    </server>
+  </servers>
+</settings>
+{% ifversion ghes %} 
+
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                      http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+  <activeProfiles>
